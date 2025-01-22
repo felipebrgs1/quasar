@@ -1,0 +1,96 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Contract {
+  id           String     @id @default(uuid())
+  version      String
+  unit         String
+  consultant   String
+  contractor   Contractor @relation(fields: [contractorId], references: [id])
+  contractorId String
+  vehicle      Vehicle    @relation(fields: [vehicleId], references: [id])
+  vehicleId    String
+  device       Device     @relation(fields: [deviceId], references: [id])
+  deviceId     String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Contractor {
+  id                    String     @id @default(uuid())
+  name                  String
+  cnpj                  String     @unique
+  stateRegistration     String?
+  municipalRegistration String?
+  address               String
+  neighborhood          String
+  complement            String?
+  zip                   String
+  city                  String
+  state                 String
+  email                 String
+  legalRepresentative   String
+  cpf                   String
+  phone                 String?
+  mobile                String
+  whatsapp              String?
+  contracts             Contract[]
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+}
+
+model Vehicle {
+  id              String     @id @default(uuid())
+  renavam         String     @unique
+  plate           String     @unique
+  yearManufacture Int
+  yearModel       Int
+  crvNumber       String?
+  securityCode    String?
+  cat             String?
+  model           String
+  species         String?
+  previousPlate   String?
+  chassis         String     @unique
+  color           String
+  fuel            String
+  observations    String?
+  category        String?
+  capacity        String?
+  power           String?
+  engine          String?
+  cmt             String?
+  axles           Int?
+  body            String?
+  owner           String
+  ownerCpfCnpj    String
+  additionalInfo  String?
+  contracts       Contract[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Device {
+  id               String     @id @default(uuid())
+  brand            String
+  model            String
+  serialNumber     String     @unique
+  operator         String?
+  lineNumber       String?
+  hasIButton       Boolean    @default(false)
+  iButtonQuantity  Int        @default(0)
+  hasRfidReader    Boolean    @default(false)
+  rfidCardQuantity Int        @default(0)
+  hasCamera        Boolean    @default(false)
+  cameraQuantity   Int        @default(0)
+  contracts        Contract[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
