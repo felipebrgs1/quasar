@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
@@ -8,11 +8,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const prisma = new PrismaClient();
-
+app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/contracts', async (req, res) => {
+app.post('/api/contracts', async (req: Request, res: Response) => {
   try {
     const contractData = req.body;
     const errors = {
@@ -66,9 +66,11 @@ app.post('/api/contracts', async (req, res) => {
     });
 
     res.status(201).json({ message: 'Contrato criado com sucesso!', data: createdContract });
+    return
   } catch (error) {
     console.error('Erro ao criar contrato:', error);
     res.status(500).json({ message: 'Ocorreu um erro ao criar o contrato.' });
+    return
   }
 });
 
