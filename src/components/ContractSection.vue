@@ -13,10 +13,15 @@
       v-model="form.version"
       label="VERSÃO"
       mask="##.##-##"
-      :rules="[(val) => val.length >= 6 || 'São 6 caractere']"
+      :rules="[(val) => val.length >= 8 || 'São 8 caractere']"
     />
 
-    <q-input filled v-model="form.unit" label="UNIDADE" />
+    <q-input
+      filled
+      v-model="form.unit"
+      label="UNIDADE"
+      :rules="[(val) => val.length >= 0 || 'Necessário']"
+    />
 
     <q-input filled v-model="form.consultant" label="CONSULTOR(A)" />
   </div>

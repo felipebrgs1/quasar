@@ -1,10 +1,35 @@
 <template>
   <div>
-    <q-input filled v-model="form.brand" label="MARCA" />
-    <q-input filled v-model="form.model" label="MODELO" />
-    <q-input filled v-model="form.serialNumber" label="Nº DE SÉRIE/IMEI" />
-    <q-input filled v-model="form.operator" label="OPERADORA TELEFÔNICA" />
-    <q-input filled v-model="form.lineNumber" label="Nº LINHA M2M" />
+    <q-input
+      filled
+      v-model="form.brand"
+      label="MARCA"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
+    />
+    <q-input
+      filled
+      v-model="form.model"
+      label="MODELO"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
+    />
+    <q-input
+      filled
+      v-model="form.serialNumber"
+      label="Nº DE SÉRIE/IMEI"
+      :rules="[(val) => (val.length = 15 || 'Necessário')]"
+    />
+    <q-input
+      filled
+      v-model="form.operator"
+      label="OPERADORA TELEFÔNICA"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
+    />
+    <q-input
+      filled
+      v-model="form.lineNumber"
+      label="Nº LINHA M2M"
+      :rules="[(val) => (val.length = 13 || 'Necessário')]"
+    />
     <q-checkbox v-model="form.hasIButton" label="LEITOR I-BUTTON" />
     <q-input filled v-model="form.iButtonQuantity" label="QUANT. I-BUTTON" />
     <q-checkbox v-model="form.hasRfidReader" label="LEITOR CARTÃO RFID" />
