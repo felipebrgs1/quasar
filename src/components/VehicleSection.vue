@@ -12,7 +12,7 @@
       v-model="form.plate"
       label="PLACA"
       mask="AAA-####"
-      :rules="[(val) => val.length == 7 || 'São 7 caracteres']"
+      :rules="[(val) => val.length == 8 || 'São 8 caracteres']"
     />
     <q-input
       filled
@@ -33,20 +33,20 @@
       v-model="form.crvNumber"
       label="NÚMERO DO CRV"
       mask="############"
-      :rules="[(val) => (val.length = 12 || 'São 12 caracteres')]"
+      :rules="[(val) => val.length == 12 || 'São 12 caracteres']"
     />
     <q-input
       filled
       v-model="form.securityCode"
       label="CÓDIGO DE SEGURANÇA DO CLA"
       mask="###########"
-      :rules="[(val) => (val.length = 11 || 'São 11 caracteres')]"
+      :rules="[(val) => val.length == 11 || 'São 11 caracteres']"
     />
     <q-input
       filled
       v-model="form.cat"
       label="CAT"
-      :rules="[(val) => val.length > 0 || 'Necessário']"
+      :rules="[(val) => val.length >= 0 || 'Necessário']"
     />
     <q-input
       filled

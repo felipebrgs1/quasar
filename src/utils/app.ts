@@ -21,6 +21,7 @@ app.post('/api/contracts', async (req: Request, res: Response) => {
       contractor: {},
       vehicle: {},
       device: {},
+      plan: {},
     };
 
     const isValid = validateForm(contractData, errors);
@@ -62,6 +63,9 @@ app.post('/api/contracts', async (req: Request, res: Response) => {
             where: { serialNumber: contractData.device.serialNumber },
             create: contractData.device,
           },
+        },
+        plan: {
+          create: contractData.plan,
         },
       },
     });

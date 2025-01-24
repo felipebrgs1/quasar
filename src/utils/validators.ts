@@ -191,6 +191,15 @@ export const validateStep = async (step: number, formData: any, errors: any): Pr
                 errors.device = {};
                 return true;
 
+            case 5:
+                const planValidation = validatePlan(formData.plan);
+                if (!planValidation.success) {
+                    errors.plan = planValidation.error.format();
+                    return false;
+                }
+                errors.plan = {};
+                return true;
+
             default:
                 return false;
         }
@@ -198,4 +207,24 @@ export const validateStep = async (step: number, formData: any, errors: any): Pr
         console.error('Validation error:', error);
         return false;
     }
+};
+
+export const validatePlan = (data: any) => {
+  const schema = z.object({
+    plan: z.string().nonempty(),
+    planValue: z.string().nonempty(),
+    dataPlan: z.string().nonempty(),
+    endPlan: z.string().nonempty(),
+    carenciaPlan: z.string().nonempty(),
+    payment: z.enum(['MENSAL', 'ANUAL'], {
+      errorMap: () => ({ message: "O pagamento deve ser 'MENSAL' ou 'ANUAL'" })
+    }),
+    MonthlyPayment: z.string().nonempty(),
+    vencimento: z.string().nonempty(),
+    paymentMethod: z.enum(['PIX', 'CARTÃO DEBITO', 'CARTAO CREDITO', 'BOLETO'], {
+      errorMap: () => ({ message: "Método de pagamento inválido" })
+    })
+  });
+
+  return schema.safeParse(data);
 };

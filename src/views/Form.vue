@@ -27,8 +27,16 @@
         </div>
       </q-step>
 
-      <q-step :name="4" title="Dispositivo" icon="devices">
+      <q-step :name="4" title="Dispositivo" icon="devices" :done="step > 4">
         <device-section v-model="form.device" :errors="errors.device" />
+        <div class="q-mt-md">
+          <q-btn flat @click="prevStep" label="Voltar" class="q-mr-sm" />
+          <q-btn @click="validateAndNext(4)" color="primary" label="Próximo" />
+        </div>
+      </q-step>
+
+      <q-step :name="5" title="Plano" icon="payments">
+        <plan-section v-model="form.plan" :errors="errors.plan" />
         <div class="q-mt-md">
           <q-btn flat @click="prevStep" label="Voltar" class="q-mr-sm" />
           <q-btn
@@ -64,6 +72,7 @@ import ContractSection from '../components/ContractSection.vue';
 import ContractorSection from '../components/ContractorSection.vue';
 import VehicleSection from '../components/VehicleSection.vue';
 import DeviceSection from '../components/DeviceSection.vue';
+import PlanSection from '../components/PlanSection.vue';
 import { validateStep } from '../utils/validators';
 
 export default defineComponent({
@@ -74,6 +83,7 @@ export default defineComponent({
     ContractorSection,
     VehicleSection,
     DeviceSection,
+    PlanSection,
   },
 
   setup() {
@@ -82,6 +92,7 @@ export default defineComponent({
       contractor: {},
       vehicle: {},
       device: {},
+      plan: {},
     });
 
     return {
@@ -164,6 +175,17 @@ export default defineComponent({
           rfidCardQuantity: '10',
           hasCamera: false,
           cameraQuantity: '0',
+        },
+        plan: {
+          plan: 'AVANÇADO II',
+          planValue: 'R$1.318,80',
+          dataPlan: '18/12/2024',
+          endPlan: '36 MESES',
+          carenciaPlan: '12 MESES',
+          payment: 'ANUAL',
+          MonthlyPayment: 'R$109,90',
+          vencimento: '20',
+          paymentMethod: 'BOLETO',
         },
       },
     };
