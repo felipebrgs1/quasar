@@ -5,7 +5,7 @@
       v-model="form.contract"
       label="CONTRATO Nº"
       mask="##############.####"
-      :rules="[(val) => val.length >= 19 || 'São 19 caracteres']"
+      :rules="[(val) => val.length == 19 || 'São 19 caracteres']"
     />
 
     <q-input
@@ -13,14 +13,14 @@
       v-model="form.version"
       label="VERSÃO"
       mask="##.##-##"
-      :rules="[(val) => val.length >= 8 || 'São 8 caractere']"
+      :rules="[(val) => val.length == 8 || 'São 8 caractere']"
     />
 
     <q-input
       filled
       v-model="form.unit"
       label="UNIDADE"
-      :rules="[(val) => val.length >= 0 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
 
     <q-input filled v-model="form.consultant" label="CONSULTOR(A)" />

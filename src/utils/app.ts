@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import { validateForm } from '../utils/validators';
+import axios from 'axios';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -71,6 +72,41 @@ app.post('/api/contracts', async (req: Request, res: Response) => {
     console.error('Erro ao criar contrato:', error);
     res.status(500).json({ message: 'Ocorreu um erro ao criar o contrato.' });
     return
+  }
+});
+
+app.get('/api/cnpj/:cnpj', async (req: Request, res: Response) => {
+  try {
+    const { cnpj } = req.params;
+
+    if (!cnpj || cnpj.length !== 14) {
+      return res.status(400).json({ message: 'CNPJ inválido. Certifique-se de fornecer um CNPJ com 14 dígitos.' });
+    }
+
+    const response = await axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+    
+    // Se chegou aqui, a requisição foi bem sucedida
+    return res.status(200).json({ 
+      status: 'OK',
+      data: response.data 
+    });
+
+  } catch (error: any) {
+    console.error('Erro ao buscar CNPJ:', error.message);
+
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 500;
+      return res.status(status).json({
+        status: 'ERROR',
+        message: 'CNPJ não encontrado ou inválido',
+        details: error.response?.data || 'Erro desconhecido na API externa.',
+      });
+    }
+    
+    return res.status(500).json({ 
+      status: 'ERROR',
+      message: 'Ocorreu um erro ao buscar o CNPJ.' 
+    });
   }
 });
 

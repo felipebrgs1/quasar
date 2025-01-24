@@ -12,21 +12,21 @@
       v-model="form.plate"
       label="PLACA"
       mask="AAA-####"
-      :rules="[(val) => (val.length = 7 || 'São 7 caracteres')]"
+      :rules="[(val) => val.length == 7 || 'São 7 caracteres']"
     />
     <q-input
       filled
       v-model="form.yearManufacture"
       label="ANO FABRICAÇÃO"
       mask="####"
-      :rules="[(val) => (val.length = 4 || 'São 4 caracteres')]"
+      :rules="[(val) => val.length == 4 || 'São 4 caracteres']"
     />
     <q-input
       filled
       v-model="form.yearModel"
       label="ANO MODELO"
       mask="####"
-      :rules="[(val) => (val.length = 4 || 'São 4 caracteres')]"
+      :rules="[(val) => val.length == 4 || 'São 4 caracteres']"
     />
     <q-input
       filled
@@ -42,18 +42,24 @@
       mask="###########"
       :rules="[(val) => (val.length = 11 || 'São 11 caracteres')]"
     />
-    <q-input filled v-model="form.cat" label="CAT" />
+    <q-input
+      filled
+      v-model="form.cat"
+      label="CAT"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
+    />
     <q-input
       filled
       v-model="form.model"
       label="MARCA/MODELO/VERSÃO"
       :rules="[(val) => val.length > 0 || 'Necessário']"
     />
-    <q-input
+    <q-select
       filled
       v-model="form.species"
-      label="ESPÉCIE/TIPO"
-      :rules="[(val) => val.length > 0 || 'Necessário']"
+      label="ESPÉCIE"
+      :options="classe"
+      :rules="[(val) => !!val || 'Espécie é obrigatória']"
     />
     <q-input
       filled
@@ -73,11 +79,12 @@
       label="COR PREDOMINANTE"
       :rules="[(val) => val.length > 0 || 'Necessário']"
     />
-    <q-input
+    <q-select
       filled
       v-model="form.fuel"
       label="COMBUSTÍVEL"
-      :rules="[(val) => val.length > 0 || 'Necessário']"
+      :options="combustivel"
+      :rules="[(val) => !!val || 'Combustível é obrigatório']"
     />
     <q-input
       filled
@@ -107,19 +114,19 @@
       filled
       v-model="form.engine"
       label="MOTOR"
-      :rules="[(val) => val.length >= 0 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
     <q-input
       filled
       v-model="form.cmt"
       label="CMT"
-      :rules="[(val) => val.length >= 0 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
     <q-input
       filled
       v-model="form.axles"
       label="EIXOS"
-      :rules="[(val) => val.length >= 0 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
     <q-input
       filled
@@ -154,6 +161,55 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      combustivel: [
+        'GASOLINA',
+        'ÁLCOOL',
+        'DIESEL S10',
+        'DIESEL S500',
+        'DIESEL ',
+        'GNV',
+        'FLEX',
+        'ELÉTRICO',
+        'HÍBRIDO',
+      ],
+      classe: [
+        'Veículo de passageiros',
+        'Bicicleta',
+        'Ciclomotor',
+        'Motocicleta',
+        'Triciclo',
+        'Quadriciclo',
+        'Automóvel',
+        'Microônibus',
+        'Ônibus',
+        'Bonde',
+        'Reboque ou semi-reboque',
+        'Charrete',
+        'Veículo de carga',
+        'Motoneta',
+        'Caminhonete',
+        'Caminhão',
+        'Carroça',
+        'Carro-de-mão',
+        'Veículo Misto',
+        'Camioneta',
+        'Utilitário',
+        'Veículos de competição',
+        'Veículo de tração',
+        'Caminhão-trator',
+        'Trator de rodas',
+        'Trator de esteiras',
+        'Trator misto',
+        'Especial',
+        'De coleção',
+        'Esportivo',
+        'Passeio',
+        'Corrida',
+      ],
+    };
   },
   computed: {
     form: {

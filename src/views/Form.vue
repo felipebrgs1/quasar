@@ -64,6 +64,7 @@ import ContractSection from '../components/ContractSection.vue';
 import ContractorSection from '../components/ContractorSection.vue';
 import VehicleSection from '../components/VehicleSection.vue';
 import DeviceSection from '../components/DeviceSection.vue';
+import { validateStep } from '../utils/validators';
 
 export default defineComponent({
   name: 'ContractForm',
@@ -169,10 +170,21 @@ export default defineComponent({
   },
 
   methods: {
-    validateAndNext(step: number) {
-      const isValid = validateForm(this.form, this.errors);
-      if (isValid) {
-        this.step = step + 1;
+    async validateAndNext(step: number) {
+      try {
+        this.loading = true;
+        console.log('Validating step:', this.errors);
+        const isValid = await validateStep(step, this.form, this.errors);
+        if (isValid) {
+          this.step = step + 1;
+        }
+      } catch (error) {
+        console.error('Validation error:', error);
+        this.notification.show = true;
+        this.notification.title = 'Erro';
+        this.notification.message = 'Erro na validação do formulário';
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -180,26 +192,25 @@ export default defineComponent({
       this.step = this.step - 1;
     },
 
-    submitForm() {
-      this.loading = true;
-      const isValid = validateForm(this.form, this.errors);
-      if (isValid) {
-        contractService
-          .create(this.form)
-          .then((response) => {
-            this.loading = false;
-            this.notification.show = true;
-            this.notification.title = 'Sucesso';
-            this.notification.message = 'Contrato criado com sucesso!';
-          })
-          .catch((error) => {
-            this.loading = false;
-            this.notification.show = true;
-            this.notification.title = 'Erro';
-            this.notification.message =
-              error.message || 'Ocorreu um erro ao criar o contrato.';
-          });
-      } else {
+    async submitForm() {
+      try {
+        this.loading = true;
+
+        // Validate final step first
+        const stepValid = await validateStep(this.step, this.form, this.errors);
+        if (!stepValid) {
+          return;
+        }
+
+        const response = await contractService.create(this.form);
+        this.notification.show = true;
+        this.notification.title = 'Sucesso';
+        this.notification.message = 'Contrato criado com sucesso!';
+      } catch (error: any) {
+        this.notification.show = true;
+        this.notification.title = 'Erro';
+        this.notification.message = error.message || 'Erro ao criar contrato';
+      } finally {
         this.loading = false;
       }
     },
