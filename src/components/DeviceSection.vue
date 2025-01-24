@@ -16,7 +16,7 @@
       filled
       v-model="form.serialNumber"
       label="Nº DE SÉRIE/IMEI"
-      :rules="[(val) => val.length == 15 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
     <q-input
       filled
