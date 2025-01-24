@@ -28,7 +28,7 @@
       filled
       v-model="form.lineNumber"
       label="Nº LINHA M2M"
-      :rules="[(val) => val.length == 13 || 'Necessário']"
+      :rules="[(val) => val.length > 0 || 'Necessário']"
     />
     <q-checkbox v-model="form.hasIButton" label="LEITOR I-BUTTON" />
     <q-input filled v-model="form.iButtonQuantity" label="QUANT. I-BUTTON" />
